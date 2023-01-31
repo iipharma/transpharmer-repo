@@ -1,0 +1,28 @@
+DEVICE: 'cuda:3'
+RANDOM_SEED: 2023
+
+MODEL:
+  N_LAYERS: 8
+  N_HEADS: 8
+  N_EMBD: 256
+  MAX_LEN: 100
+  NUM_PROPS: 0
+  EMBD_PDROP: 0.1
+  RESID_PDROP: 0.1
+  ATTN_PDROP: 0.1
+  VOCAB_SIZE: 94
+
+BENCHMARK:
+  RES_DIR: output/benchmark
+  DATA_DIR: data
+  N_REPEAT: 1
+  CKPT_PATH: weights/guacamol_nc.pt
+  TEMPERATURE: 1.0
+  BASELINE_MODE: False
+  OUTPUT_JSON: assessment.json
+  CHEMBL_TRAINING_FILE: guacamol_v1_train.smiles
+  BATCH_SIZE: 500
+  TOP_K: 
+  N_CPU: 30
+  CONTEXT: C
+  GEN_SMILES_PATH: 

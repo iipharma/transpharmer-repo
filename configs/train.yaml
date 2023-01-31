@@ -1,0 +1,31 @@
+DEVICE: 'cuda:5'
+RANDOM_SEED: 2023
+
+MODEL:
+  N_LAYERS: 8
+  N_HEADS: 8
+  N_EMBD: 256
+  MAX_LEN: 100
+  NUM_PROPS: 80
+  EMBD_PDROP: 0.1
+  RESID_PDROP: 0.1
+  ATTN_PDROP: 0.1
+  VOCAB_SIZE: 94
+
+TRAIN:
+  TRAIN_SET: data/guacamol_v1_train.smiles
+  VALID_SET: data/guacamol_v1_valid.smiles
+  MAX_EPOCHS: 100
+  BATCH_SIZE: 200
+  NUM_WORKERS: 2
+  CKPT_PATH: weights/guacamol_base72_count.pt
+  OPTIM:
+    BETAS: [0.9, 0.95]
+    GRAD_NORM_CLIP: 1.0
+    WEIGHT_DECAY: 0.1 # only applied on matmul weights
+  WARMUP_TOKENS: 1
+  FINAL_TOKENS: 1
+  LR:
+    LR_DECAY: True
+    LEARNING_RATE: 6.0e-4
+  AUG_PROB: 0.5
