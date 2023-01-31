@@ -18,7 +18,7 @@ TRAIN:
   MAX_EPOCHS: 100
   BATCH_SIZE: 200
   NUM_WORKERS: 2
-  CKPT_PATH: weights/guacamol_base72_count.pt
+  CKPT_PATH: weights/guacamol_pc.pt
   OPTIM:
     BETAS: [0.9, 0.95]
     GRAD_NORM_CLIP: 1.0

@@ -20,5 +20,5 @@ GENERATE:
   TEMPERATURE: 1.0
   TEMPLATES: ['COC(=O)c1cc(C(=CCCCC(=O)SC)c2cc(Cl)c(OC)c(C(=O)OC)c2)cc(Cl)c1OC', 'CCCN(CCc1cccc(-c2ccccc2)c1)C(=O)C1OC(C(=O)O)=CC(N)C1NC(C)=O', 'CC1(C)OCC2OC3(C4OC(C)(C)OC4CO)OC(C)(C)OC3C2O1']
   OUTPUT: output/generate_pc/out.smi
-  CKPT_PATH: weights/base72_count.pt
+  CKPT_PATH: weights/guacamol_pc.pt
   TOTAL: 1.0e+6
