@@ -30,9 +30,7 @@ To generate molecules from command line:
 python generate.py --config configs/generate_pc.yaml(your config file)
 ```
 We alse provided a toturial based on 2yac ligand for molecule generation see:
-```
 [tutorial.ipynb](tutorial.ipynb)
-```
 
 ## Configurations
 all configurations are provided in corresponding .yaml files:
