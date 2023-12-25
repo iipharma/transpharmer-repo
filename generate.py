@@ -7,6 +7,7 @@ from dataset import tokenize, untokenize
 from utils.io import load_config
 from utils.mol import get_props_from_smiles, cleanise_smiles
 import typing as t
+import argparse
 import logging
 logging.getLogger().setLevel(logging.INFO)
 
@@ -55,5 +56,9 @@ def generate(config):
 
 
 if __name__ == '__main__':
-    config = load_config('configs/generate_pc.yaml')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', default='configs/generate_pc.yaml', help='specify config file')
+    args = parser.parse_args()
+
+    config = load_config(args.config)
     generate(config)

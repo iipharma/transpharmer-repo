@@ -13,6 +13,7 @@ import numpy as np
 import torch
 from torch.cuda.amp import GradScaler
 import pandas as pd
+import argparse
 import logging
 logger = logging.getLogger(__name__)
 
@@ -102,10 +103,14 @@ class Trainer:
 
 
 if __name__ == '__main__':
-    config = load_config('configs/train.yaml')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', default='configs/train.yaml', help='specify config file')
+    args = parser.parse_args()
+
+    config = load_config(args.config)
     train_df = pd.read_csv(config.TRAIN.TRAIN_SET)
     valid_df = pd.read_csv(config.TRAIN.VALID_SET)
-    
+
     train_dataset = SmileDataset(config,
                                  dataframe=train_df,
                                  block_size=config.MODEL.MAX_LEN,

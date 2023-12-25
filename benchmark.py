@@ -11,6 +11,7 @@ from utils.io import load_config
 from datetime import date
 import typing as t
 from pathlib import Path
+import argparse
 
 
 class TransPharmerGenerator(DistributionMatchingGenerator):
@@ -61,5 +62,9 @@ def run_assessment(config):
 
 
 if __name__ == '__main__':
-    config = load_config('configs/benchmark.yaml')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', default='configs/benchmark.yaml', help='specify config file')
+    args = parser.parse_args()
+
+    config = load_config(args.config)
     run_assessment(config)
