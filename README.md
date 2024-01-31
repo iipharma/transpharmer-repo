@@ -9,13 +9,13 @@ The chemical structure of Aspirin is converted into a phar- macophoric topology 
 
 ### Requirements
 
-inops==0.6.0
-fvcore==0.1.5.post20221221
-guacamol==0.5.2
-numpy==1.23.4
-pandas==1.5.2
-rdkit==2022.9.3
-torch==1.13.1
+    inops==0.6.0
+    fvcore==0.1.5.post20221221
+    guacamol==0.5.2
+    numpy==1.23.4
+    pandas==1.5.2
+    rdkit==2022.9.3
+    torch==1.13.1
 
 ## Training
 To train your own model from command line
