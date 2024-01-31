@@ -1,16 +1,21 @@
 # Transpharmer
+TransPharmer is an innovative generative model that integrates ligand-based interpretable pharmacophore fingerprints with generative pre-training transformer (GPT) for de novo molecule generation.
+<div align=center>
+<img src="demo.jpeg" width="800px">
+</div>
 
-## Introduction
-Codes for our paper "Accelerating Discovery of Novel and Bioactive Ligands With Pharmacophore-Informed Generative Models"
+The chemical structure of Aspirin is converted into a phar- macophoric topology graph with the shortest topological distance between each feature pair computed. All the two-point and three-point pharmacophoric subgraphs are enumerated, and the topological distances are discretized with specific distance bins. 72- and 108-bit pharmacophore fingerprints are constructed from the two-point pharmacophores with different discretization schemes, while 1032-bit pharmacophore finger- prints are the concatenation of fingerprints of two-point and three-point pharmacophores. The right segment illustrates the architecture of TransPharmer as a pharmacophore fingerprints-driven GPT decoder.
 
-## Requirements 
-    einops==0.6.0
-    fvcore==0.1.5.post20221221
-    guacamol==0.5.2
-    numpy==1.23.4
-    pandas==1.5.2
-    rdkit==2022.9.3
-    torch==1.13.1
+## Requirements
+```
+einops==0.6.0
+fvcore==0.1.5.post20221221
+guacamol==0.5.2
+numpy==1.23.4
+pandas==1.5.2
+rdkit==2022.9.3
+torch==1.13.1
+```
 
 ## Training
 To train your own model from command line
@@ -47,7 +52,7 @@ each file contains model and task-sepcific variables
 230131 init commit
 ```
 
-### Contact
+## Contact
 
 ## Authors and acknowledgment
 
