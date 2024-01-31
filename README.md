@@ -1,4 +1,5 @@
 # Transpharmer
+
 TransPharmer is an innovative generative model that integrates ligand-based interpretable pharmacophore fingerprints with generative pre-training transformer (GPT) for de novo molecule generation.
 <div align=center>
 <img src="demo.jpeg" width="800px">
@@ -6,16 +7,15 @@ TransPharmer is an innovative generative model that integrates ligand-based inte
 
 The chemical structure of Aspirin is converted into a phar- macophoric topology graph with the shortest topological distance between each feature pair computed. All the two-point and three-point pharmacophoric subgraphs are enumerated, and the topological distances are discretized with specific distance bins. 72- and 108-bit pharmacophore fingerprints are constructed from the two-point pharmacophores with different discretization schemes, while 1032-bit pharmacophore finger- prints are the concatenation of fingerprints of two-point and three-point pharmacophores. The right segment illustrates the architecture of TransPharmer as a pharmacophore fingerprints-driven GPT decoder.
 
-## Requirements
-```
-einops==0.6.0
+### Requirements
+
+inops==0.6.0
 fvcore==0.1.5.post20221221
 guacamol==0.5.2
 numpy==1.23.4
 pandas==1.5.2
 rdkit==2022.9.3
 torch==1.13.1
-```
 
 ## Training
 To train your own model from command line
@@ -48,30 +48,17 @@ train.yaml
 each file contains model and task-sepcific variables
 
 ## Changelog
-```
-230131 init commit
-```
+
+    230131 init commit
+
 
 ## Contact
 
-## Authors and acknowledgment
+    xuyj@iipharma.cn
+    1801111477@pku.edu.cn
+    zhangjh@iipharma.cn
 
-## MIT License
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+## License
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+MIT. See `LICENSE` for more details.
