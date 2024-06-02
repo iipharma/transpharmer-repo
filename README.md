@@ -66,7 +66,13 @@ Manual upgrade or downgrade with pip to fulfill:
 ```
 
 ## Download data and model weights
-We used the GuacaMol pre-built datasets to train and validate our model, which can be downloaded [here](https://github.com/BenevolentAI/guacamol?tab=readme-ov-file#download).
+We used the GuacaMol pre-built datasets to train and validate our model, which can be downloaded [here](https://github.com/BenevolentAI/guacamol?tab=readme-ov-file#download). (However, if the links are inaccessible temporarily, we also provide a copy [here](https://disk.pku.edu.cn/link/AAB1F5B8730D4B4522ABCD447BFD74A23E), since GuacaMol is under MIT license.)
+
+```shell
+cd transpharmer-repo/
+unzip guacamol.zip
+ls data/
+```
 
 Pretrained TransPharmer model weights can be downloaded [here](https://disk.pku.edu.cn/link/AAE3AFB88B939E4C1CB7A6EF0C7311716F). The organization of the downloaded directory is described as follows:
 ```
@@ -118,7 +124,7 @@ python benchmark.py --config configs/benchmark.yaml
 
 To benchmark our unconditional model with MOSES, generate samples using `benchmark.py` or `generate.py` with `generate_nc.yaml` config and compute all MOSES metrics following their [guidelines](https://github.com/molecularsets/moses?tab=readme-ov-file#benchmarking-your-models).
 
-To evaluate $D_{count}$ and $S_{pharma}$ metrics (see definition in our paper) for pharmacophore-based generation, run `get_metrics` in `benchmark.py` with generated csv file.
+To evaluate $D_{\rm count}$ and $S_{\rm pharma}$ metrics (see definition in our paper) for pharmacophore-based generation, run `get_metrics` in `benchmark.py` with generated csv file.
 
 ## Reproduction of PLK1 inhibitors case study
 To reproduce the results of case study of designing PLK1 inhibitors in our paper, run the following command:
