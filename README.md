@@ -2,7 +2,7 @@
 
 ---
 
-TransPharmer is an innovative generative model that integrates interpretable topological pharmacophore fingerprints with generative pre-training transformer (GPT) for de novo molecule generation. TransPharmer can be used to explore pharmacophorically similar and structurally diverse ligands and has been successfully applied to design novel kinase inhibitors with low-nanomolar potency and high selectivity. The workflow of TransPharmer is illustrated in the figure below.
+TransPharmer is an innovative generative model that integrates interpretable topological pharmacophore fingerprints with generative pre-training transformer (GPT) for de novo molecule generation. TransPharmer can be used to explore pharmacophorically similar and structurally diverse ligands and **has been successfully applied to design novel kinase inhibitors with low-nanomolar potency and high selectivity**. The workflow of TransPharmer is illustrated in the figure below.
 
 For more details, please refer to the [arXiv paper](https://arxiv.org/abs/2401.01059).
 
