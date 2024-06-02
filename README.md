@@ -1,60 +1,148 @@
-# Transpharmer for novel active ligands
+# Transpharmer: Accelerating Discovery of Novel and Bioactive Ligands With Pharmacophore-Informed Generative Models
 
 ---
 
-TransPharmer is an innovative generative model that integrates ligand-based interpretable pharmacophore fingerprints with generative pre-training transformer (GPT) for de novo molecule generation.
+TransPharmer is an innovative generative model that integrates interpretable topological pharmacophore fingerprints with generative pre-training transformer (GPT) for de novo molecule generation. TransPharmer can be used to explore pharmacophorically similar and structurally diverse ligands and has been successfully applied to design novel kinase inhibitors with low-nanomolar potency and high selectivity. The workflow of TransPharmer is illustrated in the figure below.
+
+For more details, please refer to the [arXiv paper](https://arxiv.org/abs/2401.01059).
+
+If you find TransPharmer useful, please consider citing us as:
+```
+@article{xie2024accelerating,
+  title={Accelerating Discovery of Novel and Bioactive Ligands With Pharmacophore-Informed Generative Models},
+  author={Xie, Weixin and Zhang, Jianhang and Xie, Qin and Gong, Chaojun and Xu, Youjun and Lai, Luhua and Pei, Jianfeng},
+  journal={arXiv preprint arXiv:2401.01059},
+  year={2024}
+}
+```
+
 <div align=center>
 <img src="demo.jpeg" width="800px">
 </div>
 
-A structure of Aspirin is converted into a pharmacophoric topology graph with the shortest topological distance between each feature pair computed. All the two-point and three-point pharmacophoric subgraphs are enumerated, and the topological distances are discretized with specific distance bins. 72- and 108-bit pharmacophore fingerprints are constructed from the two-point pharmacophores with different discretization schemes, while 1032-bit pharmacophore fingerprints are the concatenation of fingerprints of two-point and three-point pharmacophores. The bottom part illustrates the architecture of TransPharmer as a pharmacophore fingerprints-driven GPT decoder.
+## Installation
 
-## Requirements
+TransPharmer was tested on the environment with the following installed packages or configurations.
 
-- inops==0.6.0
+- python 3.9
+- torch=1.13.1
+- cuda 11.7 (Nvidia GeForce RTX 3090. GPU memory size: 24 GB)
+- rdkit=2022.9.3
+- scipy=1.8.0
+- numpy=1.23.5
+- einops==0.6.0
 - fvcore==0.1.5.post20221221
-- guacamol==0.5.2
-- numpy==1.23.4
-- pandas==1.5.2
-- rdkit==2022.9.3
-- torch==1.13.1
+- guacamol=0.5.2 (optional)
+- tensorflow=2.11.0 (required by and compatible with guacamol 0.5.2)
+
+Here is the step-by-step process to reproduce TransPharmer's working environment:
+
+1. Create conda environment and activate:
+
+```shell
+conda create -n transphamer python=3.9
+```
+
+2. Install pytorch:
+
+```
+conda install pytorch==1.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia
+```
+
+3. Install other requirements using ``mamba``: first install mamba following the [tutorial](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html#fresh-install-recommended). (Do not forget to change channels as [required](https://mamba.readthedocs.io/en/latest/user_guide/troubleshooting.html#using-the-defaults-channels).)
+
+```shell
+mamba env update -n transpharmer --file other_requirements.yml
+```
+
+The reason to use this hybrid installation process is that ``conda`` can be rather annoying and time-consuming to solve environment and settle all requirements. ``mamba`` is more faster.
+
+4. (Optional) run GuacaMol benchmarking: need to adjust some packages in order to be compatible with GuacaMol. (GuacaMol will automatically install the latest version of TensorFlow, which can be problematic.)
+```
+Manual upgrade or downgrade with pip to fulfill:
+- tensorflow=2.11.0
+- scipy=1.8.0
+- numpy=1.23.5
+```
+
+## Download data and model weights
+We used the GuacaMol pre-built datasets to train and validate our model, which can be downloaded [here](https://github.com/BenevolentAI/guacamol?tab=readme-ov-file#download).
+
+Pretrained TransPharmer model weights can be downloaded [here](https://disk.pku.edu.cn/link/AAE3AFB88B939E4C1CB7A6EF0C7311716F). The organization of the downloaded directory is described as follows:
+```
+cd transpharmer-repo/
+unzip TransPharmer_weights.zip
+ls weights/
+
+weights/
+  guacamol_pc_72bit.pt: trained with 72-bit pharmacophore fingerprints of GuacaMol compounds;
+  guacamol_pc_80bit.pt: trained with 72-bit pharmacophore fingerprints concated with feature count vectors;
+  guacamol_pc_108bit.pt: trained with 108-bit pharmacophore fingerprints;
+  guacamol_pc_1032bit.pt: trained with 1032-bit pharmacophore fingerprints;
+  guacamol_nc.pt: unconditional version trained on GuacaMol;
+  moses_nc.pt: unconditional version trained on MOSES;
+```
+
+
+## Configurations
+We provide several configuration files (*.yaml) for different utilities:
+
+- generate_pc.yaml (configuration of **p**harmacophore-**c**onditioned generation)
+- generate_nc.yaml (configuration of unconditional/**n**o-**c**ondition generation)
+- benchmark.yaml (configuration of benchmarking)
+- train.yaml (configuration of training)
+
+Each yaml file contains model and task-specific parameters. See `explanation.yaml` and [Tutorial](./tutorial.ipynb) for more details.
 
 ## Training
-To train your own model from command line
+To train your own model, use the following command line:
 ```
 python train.py --config configs/train.yaml
 ```
 
-## Benchmarking
-To benchmark our model(no-condition version) with guacamol from command line.
-```
-python benchmark.py --config configs/benchmark.yaml(your config file)
-```
-
 ## Generation
-To generate molecules from command line:
+To generate molecules similar to input reference compounds in terms of pharmacophore, usually some known actives, use the following command line:
 ```
-python generate.py --config configs/generate_pc.yaml(your config file)
+python generate.py --config configs/generate_pc.yaml
 ```
-A demo case is provided in the [Tutorial](tutorial.ipynb)
 
-## Configurations
-all configurations are provided in corresponding *.yaml files:
+Generated SMILESs are saved in the user-specified csv file. The generated csv file has two columns (`Template` and `SMILES`) in pharmacophore-conditioned (pc) generation mode (or one column `SMILES` in unconditional (nc) generation mode).
 
-- benchmark.yaml (configuration of benchmark test )
-- generate_nc.yaml (configuration of unconditional generation)
-- generate_pc.yaml (configuration of pharmacophore conditional generation)
-- train.yaml (configuration of training)
+A demo is provided in the [Tutorial](tutorial.ipynb).
 
-Each yaml file contains model and task-sepcific variables. Details please see [Tutorial](./tutorial.ipynb)  
+## Benchmarking
+To benchmark our unconditional model with GuacaMol, run the following command line:
+```
+python benchmark.py --config configs/benchmark.yaml
+```
 
+To benchmark our unconditional model with MOSES, generate samples using `benchmark.py` or `generate.py` with `generate_nc.yaml` config and compute all MOSES metrics following their [guidelines](https://github.com/molecularsets/moses?tab=readme-ov-file#benchmarking-your-models).
+
+To evaluate $D_{count}$ and $S_{pharma}$ metrics (see definition in our paper) for pharmacophore-based generation, run `get_metrics` in `benchmark.py` with generated csv file.
+
+## Reproduction of PLK1 inhibitors case study
+To reproduce the results of case study of designing PLK1 inhibitors in our paper, run the following command:
+
+```shell
+python generate.py --config configs/generate_reproduce_plk1.yaml
+```
+
+After filtering out invalid and duplicate SMILES, one should be able to find exactly the same structure as `lig-182` (corresponds to the most potent synthesized compound `IIP0943`) and structures with identical BM scaffolds to `lig-3`, `lig-524` and `lig-886`.
 
 ## Contact
 
 - Youjun Xu (xuyj@iipharma.cn)
-- Weixin Xie (1801111477@pku.edu.cn)
+- Weixin Xie (xiewx@pku.edu.cn)
 - Jianhang Zhang (zhangjh@iipharma.cn)
 
 ## License
 
-MIT. See [LICENSE](./LICENSE) for more details.
+MIT license. See [LICENSE](./LICENSE) for more details.
+
+## Acknowledgement
+
+We thank authors of the following repositories to share their codes:
+
+- https://github.com/rdkit/rdkit
+- https://github.com/BenevolentAI/guacamol
+- https://github.com/devalab/molgpt

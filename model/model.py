@@ -1,11 +1,3 @@
-"""
-GPT model:
-- the initial stem consists of a combination of token encoding and a positional encoding
-- the meat of it is a uniform sequence of Transformer blocks
-    - each Transformer is a sequential combination of a 1-hidden-layer MLP block and a self-attention block
-    - all blocks feed into a central residual pathway similar to resnets
-- the final decoder is a linear projection into a vanilla Softmax classifier
-"""
 import math
 import torch
 from torch import nn
@@ -127,7 +119,7 @@ def top_k_logits(logits, k):
 
 
 @torch.no_grad()
-def sample(model, x, steps, temperature=1.0, sample=False, top_k=None, prop=None):
+def sample(model, x, steps, temperature=1.0, sample_=False, top_k=None, prop=None):
     """
     take a conditioning sequence of indices in x (of shape (b,t)) and predict the next token in
     the sequence, feeding the predictions back into the model each time. Clearly the sampling
@@ -147,7 +139,7 @@ def sample(model, x, steps, temperature=1.0, sample=False, top_k=None, prop=None
         # apply softmax to convert to probabilities
         probs = F.softmax(logits, dim=-1)
         # sample from the distribution or take the most likely
-        if sample:
+        if sample_:
             ix = torch.multinomial(probs, num_samples=1)
         else:
             _, ix = torch.topk(probs, k=1, dim=-1)
