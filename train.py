@@ -2,19 +2,17 @@ import os.path as op
 import pandas as pd
 import numpy as np
 import torch
+from torch.cuda.amp import GradScaler
+import argparse
+import logging
+
 from model import GPT
 from utils.lr import LR
 from utils.optim import build_optimizer
 from utils.seed import set_seed
-from dataset import build_dataloader
+from dataset import build_dataloader, SmileDataset
 from utils.io import load_config
-from dataset import SmileDataset
-import numpy as np
-import torch
-from torch.cuda.amp import GradScaler
-import pandas as pd
-import argparse
-import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -32,6 +30,8 @@ class Trainer:
         self.scaler = GradScaler()
         self.best_loss = float('inf')
         self.trained_tokens = 0 # counter used for learning rate decay
+        self.conditional = True if config.MODEL.NUM_PROPS > 0 else False
+        set_seed(config.RANDOM_SEED)
 
     def save_checkpoint(self):
         # DataParallel wrappers keep raw model object in .module attribute
@@ -42,11 +42,18 @@ class Trainer:
     def train_epoch(self, epoch):
         self.model.train()
         losses = []
-        for it, (x, y, p) in enumerate(self.train_loader):
+        for it, data in enumerate(self.train_loader):
             # place data on the correct device
-            x = x.to(self.device)
-            y = y.to(self.device)
-            p = p.to(self.device)
+            if self.conditional:
+                x, y, p = data
+                x = x.to(self.device)
+                y = y.to(self.device)
+                p = p.to(self.device)
+            else:
+                x, y = data
+                x = x.to(self.device)
+                y = y.to(self.device)
+                p = None
             # forward the model
             with torch.cuda.amp.autocast():
                 with torch.set_grad_enabled(True):
@@ -74,11 +81,18 @@ class Trainer:
     def valid_epoch(self, epoch):
         self.model.eval()
         losses = []
-        for x, y, p in self.valid_loader:
+        for data in self.valid_loader:
             # place data on the correct device
-            x = x.to(self.device)
-            y = y.to(self.device)
-            p = p.to(self.device)
+            if self.conditional:
+                x, y, p = data
+                x = x.to(self.device)
+                y = y.to(self.device)
+                p = p.to(self.device)
+            else:
+                x, y = data
+                x = x.to(self.device)
+                y = y.to(self.device)
+                p = None
             # forward the model
             with torch.cuda.amp.autocast():
                 with torch.no_grad():
@@ -129,8 +143,8 @@ if __name__ == '__main__':
         model.load_state_dict(torch.load(ckpt_path))
     config.TRAIN.WARMUP_TOKENS = 0.1 * len(train_dataset) * config.MODEL.MAX_LEN
     config.TRAIN.FINAL_TOKENS = config.TRAIN.MAX_EPOCHS * len(train_dataset) * config.MODEL.MAX_LEN
-    trainer = Trainer(model, \
-                      train_dataset, \
-                      valid_dataset, \
+    trainer = Trainer(model,
+                      train_dataset,
+                      valid_dataset,
                       config)
     trainer.train()

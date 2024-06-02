@@ -1,0 +1,13 @@
+name: transpharmer
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+  - rdkit=2022.9.3
+  - pip
+  - pip:
+    - fvcore==0.1.5.post20221221
+    - guacamol==0.5.2
+    - einops==0.6.0
+    - -i https://pypi.tuna.tsinghua.edu.cn/simple  # For Chinese users

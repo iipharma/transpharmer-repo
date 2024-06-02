@@ -1,19 +1,19 @@
-import re, math
+import re
 import numpy as np
-import torch
 from rdkit import Chem
+import torch
 from torch.utils.data import Dataset
 from torch.utils.data.dataloader import DataLoader
-from utils.pharm.misc_v2 import get_pharma_count, get_pharma_fp
+from utils.pharm.misc import get_pharma_fp, get_pharma_count_fp
 
 
 pad_token = '<'
 nan_token = ''
 tokens = ['#', '%10', '%11', '%12', '(', ')', '-', '1', '2', '3', '4', '5', '6', '7', '8', '9', pad_token, '=', 'B', 'Br', 'C', 'Cl', 'F', 'I', 'N', 'O', 'P', 'S', '[B-]', '[BH-]', '[BH2-]', '[BH3-]', '[B]', '[C+]', '[C-]', '[CH+]', '[CH-]', '[CH2+]', '[CH2]', '[CH]', '[F+]', '[H]', '[I+]', '[IH2]', '[IH]', '[N+]', '[N-]', '[NH+]', '[NH-]', '[NH2+]', '[NH3+]',
-            '[N]', '[O+]', '[O-]', '[OH+]', '[O]', '[P+]', '[PH+]', '[PH2+]', '[PH]', '[S+]', '[S-]', '[SH+]', '[SH]', '[Se+]', '[SeH+]', '[SeH]', '[Se]', '[Si-]', '[SiH-]', '[SiH2]', '[SiH]', '[Si]', '[b-]', '[bH-]', '[c+]', '[c-]', '[cH+]', '[cH-]', '[n+]', '[n-]', '[nH+]', '[nH]', '[o+]', '[s+]', '[sH+]', '[se+]', '[se]', 'b', 'c', 'n', 'o', 'p', 's']
+          '[N]', '[O+]', '[O-]', '[OH+]', '[O]', '[P+]', '[PH+]', '[PH2+]', '[PH]', '[S+]', '[S-]', '[SH+]', '[SH]', '[Se+]', '[SeH+]', '[SeH]', '[Se]', '[Si-]', '[SiH-]', '[SiH2]', '[SiH]', '[Si]', '[b-]', '[bH-]', '[c+]', '[c-]', '[cH+]', '[cH-]', '[n+]', '[n-]', '[nH+]', '[nH]', '[o+]', '[s+]', '[sH+]', '[se+]', '[se]', 'b', 'c', 'n', 'o', 'p', 's']
 vocab_size = len(tokens)
-stoi = { ch:i for i,ch in enumerate(tokens) }
-itos = { i:ch for i,ch in enumerate(tokens) }
+stoi = {ch: i for i, ch in enumerate(tokens)}
+itos = {i: ch for i, ch in enumerate(tokens)}
 
 pattern = "(\[[^\]]+]|<|Br?|Cl?|N|O|S|P|F|I|b|c|n|o|s|p|\(|\)|\.|=|#|-|\+|\\\\|\/|:|~|@|\?|>|\*|\$|\%[0-9]{2}|[0-9])"
 regex = re.compile(pattern)
@@ -50,11 +50,17 @@ class SmileDataset(Dataset):
 
     def get_prop(self, mol):
         try:
-            ct = get_pharma_count(mol)
-            fp = get_pharma_fp(mol)
-            fp = [t for t in fp]
-            prop = ct + fp
-            return prop
+            if mol is not None:
+                if self.num_props == 80:  # 72-bit fp & feature counts (8)
+                    prop = get_pharma_count_fp(mol)
+                else:
+                    prop = get_pharma_fp(mol, n_dim=self.num_props)
+                return prop
+            # ct = get_pharma_count(mol)
+            # fp = get_pharma_fp(mol)
+            # fp = [t for t in fp]
+            # prop = ct + fp
+            # return prop
         except:
             return
 

@@ -1,5 +1,5 @@
-DEVICE: 'cuda:3'
-RANDOM_SEED: 2023
+DEVICE: 'cuda:4'
+RANDOM_SEED: 42
 
 MODEL:
   N_LAYERS: 8
@@ -13,16 +13,13 @@ MODEL:
   VOCAB_SIZE: 94
 
 BENCHMARK:
-  RES_DIR: output/benchmark
-  DATA_DIR: data
-  N_REPEAT: 1
-  CKPT_PATH: weights/guacamol_nc.pt
+  CKPT_PATH: weights/guacamol_nc.pt # (For GuacaMol) weights/guacamol_nc.pt # (For MOSES) weights/moses_nc.pt
   TEMPERATURE: 1.0
   BASELINE_MODE: False
-  OUTPUT_JSON: assessment.json
-  CHEMBL_TRAINING_FILE: guacamol_v1_train.smiles
+  OUTPUT_JSON: output/benchmark/assessment.json  # (For MOSES) unused
+  CHEMBL_TRAINING_FILE: data/guacamol_v1_train.smiles
   BATCH_SIZE: 500
   TOP_K: 
   N_CPU: 30
   CONTEXT: C
-  GEN_SMILES_PATH: 
+  GEN_SMILES_PATH:  # (For MOSES) output/benchmark/out.csv # (For GuacaMol) <leave blank!>

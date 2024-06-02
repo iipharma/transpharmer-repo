@@ -1,5 +1,5 @@
-DEVICE: 'cuda:0'
-RANDOM_SEED: 2023
+DEVICE: 'cuda:2'
+RANDOM_SEED: 42
 
 MODEL:
   N_LAYERS: 8
@@ -15,10 +15,10 @@ MODEL:
 GENERATE:
   CONTEXT: C
   BATCH_SIZE: 1024
-  N_CPU: 1
+  N_CPU: 10
   VERSION: pc
   TEMPERATURE: 0.7
-  TEMPLATES: ['C[NH+]1CCN(C2=CC=C(OC(F)(F)F)C(NC3=NC=C(CCC4=C5N(CCO)N=C4C(N)=O)C5=N3)=C2)CC1']
-  OUTPUT: output/generate_pc/out.smi
+  TEMPLATES: ['C[NH+]1CCN(C2=CC=C(OC(F)(F)F)C(NC3=NC=C(CCC4=C5N(CCO)N=C4C(N)=O)C5=N3)=C2)CC1']  # Onvansertib
+  OUTPUT: output/reproduce_plk1_case/out_test.csv
   CKPT_PATH: weights/guacamol_BM_72bit_0410.pt
-  TOTAL: 1.0e+6
+  N_REPEAT: 400000

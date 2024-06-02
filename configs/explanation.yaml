@@ -1,0 +1,27 @@
+# For parameters explanation only
+DEVICE: # Specify used single GPU, e.g. "cuda:0"
+RANDOM_SEED: # Random seed used in training and generating for reproduction of results
+
+MODEL:
+  N_LAYERS: # Number of transformer layers
+  N_HEADS: # Number of attention heads
+  N_EMBD: # Size of hidden layers
+  MAX_LEN: # Max length of input SMILES
+  NUM_PROPS: # Specify dimension of used fingerprints
+  EMBD_PDROP: # Dropout rates
+  RESID_PDROP: # Dropout rates
+  ATTN_PDROP: # Dropout rates
+  VOCAB_SIZE: # Number of SMILES tokens in vocab
+
+GENERATE:
+  CONTEXT: # Starting tokens (useful for scaffold-based design or lead optimization)
+           # type str: same context for each template;
+           # type List[str]: individual context for each template (must match length of TEMPLATES)
+  BATCH_SIZE:
+  N_CPU: # Number of CPU for parallelization
+  VERSION: # Version of TransPharmer, pc (pharmacophore-conditioned) or nc (no-condition).
+  TEMPERATURE: # Sampling temperature
+  TEMPLATES: # Reference compounds to provide pharmacophore fingerprints
+  OUTPUT: # CSV path for saving generated SMILES
+  CKPT_PATH: # Path to pretrained model weight
+  N_REPEAT: # Number of samples PER TEMPLATE

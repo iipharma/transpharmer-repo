@@ -1,12 +1,12 @@
 DEVICE: 'cuda:3'
-RANDOM_SEED: 2023
+RANDOM_SEED: 42
 
 MODEL:
   N_LAYERS: 8
   N_HEADS: 8
   N_EMBD: 256
   MAX_LEN: 100
-  NUM_PROPS: 80
+  NUM_PROPS: 72
   EMBD_PDROP: 0.1
   RESID_PDROP: 0.1
   ATTN_PDROP: 0.1
@@ -14,11 +14,11 @@ MODEL:
 
 GENERATE:
   CONTEXT: C
-  BATCH_SIZE: 200
-  N_CPU: 1
-  VERSION: nc
-  TEMPERATURE: 1.0
-  TEMPLATES: ['COC(=O)c1cc(C(=CCCCC(=O)SC)c2cc(Cl)c(OC)c(C(=O)OC)c2)cc(Cl)c1OC', 'CCCN(CCc1cccc(-c2ccccc2)c1)C(=O)C1OC(C(=O)O)=CC(N)C1NC(C)=O', 'CC1(C)OCC2OC3(C4OC(C)(C)OC4CO)OC(C)(C)OC3C2O1']
-  OUTPUT: output/generate_pc/out.smi
-  CKPT_PATH: weights/guacamol_pc.pt
-  TOTAL: 1.0e+6
+  BATCH_SIZE: 1024
+  N_CPU: 10
+  VERSION: pc
+  TEMPERATURE: 0.7
+  TEMPLATES: ['C[NH+]1CCN(C2=CC=C(OC(F)(F)F)C(NC3=NC=C(CCC4=C5N(CCO)N=C4C(N)=O)C5=N3)=C2)CC1']
+  OUTPUT: output/generate_pc/out.csv
+  CKPT_PATH: weights/guacamol_pc_72bit.pt
+  N_REPEAT: 1000000
