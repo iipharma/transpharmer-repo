@@ -4,15 +4,19 @@
 
 TransPharmer is an innovative generative model that integrates interpretable topological pharmacophore fingerprints with generative pre-training transformer (GPT) for de novo molecule generation. TransPharmer can be used to explore pharmacophorically similar and structurally diverse ligands and **has been successfully applied to design novel kinase inhibitors with low-nanomolar potency and high selectivity**. The workflow of TransPharmer is illustrated in the figure below.
 
-For more details, please refer to the [arXiv paper](https://arxiv.org/abs/2401.01059).
+For more details, please refer to [our paper](https://www.nature.com/articles/s41467-025-56349-0) in Nature Communications.
 
 If you find TransPharmer useful, please consider citing us as:
 ```
-@article{xie2024accelerating,
-  title={Accelerating Discovery of Novel and Bioactive Ligands With Pharmacophore-Informed Generative Models},
-  author={Xie, Weixin and Zhang, Jianhang and Xie, Qin and Gong, Chaojun and Xu, Youjun and Lai, Luhua and Pei, Jianfeng},
-  journal={arXiv preprint arXiv:2401.01059},
-  year={2024}
+@article{xie2025accelerating,
+  title={Accelerating discovery of bioactive ligands with pharmacophore-informed generative models},
+  author={Xie, Weixin and Zhang, Jianhang and Xie, Qin and Gong, Chaojun and Ren, Yuhao and Xie, Jin and Sun, Qi and Xu, Youjun and Lai, Luhua and Pei, Jianfeng},
+  journal={Nature Communications},
+  volume={16},
+  number={1},
+  pages={2391},
+  year={2025},
+  publisher={Nature Publishing Group UK London}
 }
 ```
 
@@ -40,7 +44,7 @@ Here is the step-by-step process to reproduce TransPharmer's working environment
 1. Create conda environment and activate:
 
 ```shell
-conda create -n transphamer python=3.9
+conda create -n transpharmer python=3.9
 ```
 
 2. Install pytorch:
@@ -55,11 +59,11 @@ conda install pytorch==1.13.1 pytorch-cuda=11.7 -c pytorch -c nvidia
 mamba env update -n transpharmer --file other_requirements.yml
 ```
 
-The reason to use this hybrid installation process is that ``conda`` can be rather annoying and time-consuming to solve environment and settle all requirements. ``mamba`` is more faster.
+The reason to use this hybrid installation process is that ``conda`` can be rather annoying and time-consuming to solve environment and settle all requirements. ``mamba`` is faster.
 
 4. (Optional) run GuacaMol benchmarking: need to adjust some packages in order to be compatible with GuacaMol. (GuacaMol will automatically install the latest version of TensorFlow, which can be problematic.)
 ```
-Manual upgrade or downgrade with pip to fulfill:
+Manually upgrade or downgrade the following packages with pip for compatibility:
 - tensorflow=2.11.0
 - scipy=1.8.0
 - numpy=1.23.5

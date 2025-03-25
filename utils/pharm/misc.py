@@ -14,19 +14,6 @@ import numpy as np
 
 
 BaseFeatures_path = f"{os.path.dirname(__file__)}/BaseFeatures.fdef"
-# minPointCount=2
-# maxPointCount=2
-# n_dist_bins=2
-#
-# fdef = ChemicalFeatures.BuildFeatureFactory(BaseFeatures_path)
-# sigFactory = SigFactory(fdef, minPointCount=minPointCount, maxPointCount=maxPointCount)
-# if n_dist_bins == 2:
-#     sigFactory.SetBins([(0, 3), (3, 8)])
-# elif n_dist_bins == 3:
-#     sigFactory.SetBins([(0, 2), (2, 5), (5, 8)])
-# else:
-#     raise NotImplementedError()
-# sigFactory.Init()
 
 
 class Pharmacophores(Enum):
@@ -43,18 +30,7 @@ class Pharmacophores(Enum):
 AllPharmaTypes = [x.value for x in Pharmacophores]
 
 
-# def get_pharma_fp(romol):
-#     """
-#     """
-#     #####################
-#     # fingerprint generation
-#     #####################
-#     fp = Generate.Gen2DFingerprint(romol, sigFactory, dMat=None)
-#     fp = [t for t in fp]
-#     return fp
-
-
-def get_pharma_fp(romol, n_dim=72):
+def get_pharma_fp(romol, n_dim=72, return_list=True):
 
     if n_dim == 72:
         minPointCount = 2
@@ -84,8 +60,11 @@ def get_pharma_fp(romol, n_dim=72):
     sigFactory.Init()
 
     fp = Generate.Gen2DFingerprint(romol, sigFactory, dMat=None)
-    fp = [b for b in fp]
-    return fp
+    if return_list:
+        fp = [b for b in fp]
+        return fp
+    else:
+        return fp
 
 
 def get_pharma_count(romol, cid=-1):
@@ -237,7 +216,7 @@ def get_fp_for_sim_calc(mol, fptype,
         elif fptype == "morgan-bv":  # 没法与上面的"morgan"指纹对象直接计算相似度
             return AllChem.GetMorganFingerprintAsBitVect(mol, radius, nBits=nBits)  # 长度由nBits指定，记录有无出现某种子结构
         elif fptype == "rdkit_pharm":
-            return get_pharma_fp(mol, n_dim=ph4_dim)
+            return get_pharma_fp(mol, n_dim=ph4_dim, return_list=False)
         elif fptype == "erg":  # ErG fingerprint: 315 positive real number 可以大于1
             return rdReducedGraphs.GetErGFingerprint(mol).tolist()  # 原本输出为np.ndarray，但是很不方便，特别是评估`None in [fp1, fp2]`
         else:

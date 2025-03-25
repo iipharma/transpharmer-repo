@@ -20,5 +20,5 @@ GENERATE:
   TEMPERATURE: 0.7
   TEMPLATES: ['C[NH+]1CCN(C2=CC=C(OC(F)(F)F)C(NC3=NC=C(CCC4=C5N(CCO)N=C4C(N)=O)C5=N3)=C2)CC1']  # Onvansertib
   OUTPUT: output/reproduce_plk1_case/out_test.csv
-  CKPT_PATH: weights/guacamol_BM_72bit_0410.pt
+  CKPT_PATH: weights/guacamol_pc_72bit.pt
   N_REPEAT: 400000
