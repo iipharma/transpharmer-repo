@@ -3,6 +3,7 @@ import argparse
 import logging
 logging.getLogger().setLevel(logging.INFO)
 from rdkit import Chem
+import os
 
 from model import GPT, sample
 from dataset import tokenize, untokenize
@@ -51,6 +52,11 @@ def generate(input_config):
 
     set_seed(input_config.RANDOM_SEED)
     n_gens = 0
+    if not os.path.exists(os.path.dirname(input_config.GENERATE.OUTPUT)):
+        os.makedirs(os.path.dirname(input_config.GENERATE.OUTPUT))
+    if os.path.exists(input_config.GENERATE.OUTPUT):
+        logging.warning(f"Output file {input_config.GENERATE.OUTPUT} already exists. "
+                        f"Appending to the existing file.")
 
     if input_config.MODEL.NUM_PROPS:
         for context, prop, templates in zip(torch.split(all_context, input_config.GENERATE.BATCH_SIZE),
